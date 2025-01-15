@@ -3,7 +3,7 @@ package com.curso.ecommerce.model;
 import java.util.Date;
 
 public class DetalleOrden {
-
+//atributos
 	private Integer id;
 	private String nombre;
 	private double cantidad;
@@ -13,7 +13,7 @@ public class DetalleOrden {
 	public DetalleOrden() {
 		// TODO Auto-generated constructor stub
 	}
-
+//constructor
 	public DetalleOrden(Integer id, String nombre, double cantidad, double precio, double total) {
 		super();
 		this.id = id;
