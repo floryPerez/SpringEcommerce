@@ -7,11 +7,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.curso.ecommerce.model.Producto;
 import com.curso.ecommerce.model.Usuario;
 import com.curso.ecommerce.service.ProductoService;
+import com.curso.ecommerce.service.UploadFileService;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 import org.slf4j.*;
@@ -25,6 +30,8 @@ public class ProductoController {
 	@Autowired
 	private ProductoService productoService;
 
+	@Autowired
+	private UploadFileService upload;
 	// redicreccionar hacia la vista
 
 	@GetMapping("")
@@ -41,47 +48,70 @@ public class ProductoController {
 	}
 
 	@PostMapping("/save")
-	public String save(Producto producto) {
+	public String save(Producto producto, @RequestParam("img") MultipartFile file) throws IOException {
 		// test
 		LOGGER.info("ESTE ES EL OBJETO PRODUCTO DE LA VISTA{}", producto);
 		// crear un usuario
 		Usuario u = new Usuario(1, "", "", "", "", "", "", "");
 		// se pasa el usuario u
 		producto.setUsuario(u);
+		// crer la log para subir la imgen al servidor y guardar el nombre en la bd
+		// ingresa la ig por primera vez
+		if (producto.getId() == null) {// cuando se crea un producto
+			String nombreImagen = upload.saveImage(file);
+			producto.setImagen(nombreImagen);// se guarda enn el campo img el nombre de la img
+		} else {//
+				// cuando se modifique un producto y se cargue la misma imagen
+			if (file.isEmpty()) {
+				// obtener un obj de tipo producto
+				Producto p = new Producto();
+				// obtenemos la img
+				p = productoService.get(producto.getId()).get();
+				producto.setImagen(p.getImagen());
+			} else {
+				// se obtiene la img nueva y luego se le pasa al producto
+				String nombreImagen = upload.saveImage(file);
+				producto.setImagen(nombreImagen);// se guarda enn el campo img el nombre de la img
+			}
+		}
 		productoService.save(producto);
 
 		return "redirect:/productos";
 	}
+
 //editar un producto,
 	// se pasa el id y se bsuca en la bd para ese id y se pasa hacia la vista de
 	// editar y se edita y luego se actualiza
 //
-	//buscar la isntancia del registro para el id que se esta pasando
+	// buscar la isntancia del registro para el id que se esta pasando
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable Integer id, Model model) {
-		//se crea un onj d etipo producto
-		Producto producto=new Producto();
-		Optional<Producto> optionalProducto=productoService.get(id);
-		
-		producto=optionalProducto.get();
-		LOGGER.info("Producto buscado: {}",producto);
+		// se crea un onj d etipo producto
+		Producto producto = new Producto();
+		Optional<Producto> optionalProducto = productoService.get(id);
+
+		producto = optionalProducto.get();
+		LOGGER.info("Producto buscado: {}", producto);
 		model.addAttribute("producto", producto);
 		return "productos/edit";
 	}
+
 	@PostMapping("/update")
 	public String update(Producto producto) {
 		productoService.update(producto);
 		return "redirect:/productos";
 	}
-	
-	//eliminar un registro
+
+	// eliminar un registro
 	@GetMapping("/delete/{id}")
 
-	public String  delete(@PathVariable Integer id) {
+	public String delete(@PathVariable Integer id) {
 		productoService.delete(id);
-		//regresa a la lista de todoos los productos
+		// regresa a la lista de todoos los productos
 		return "redirect:/productos";
 
 	}
-	
+
+	// logica para crera y subir la im
+
 }
