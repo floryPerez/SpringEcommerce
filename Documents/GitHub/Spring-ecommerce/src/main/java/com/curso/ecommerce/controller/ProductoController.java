@@ -75,5 +75,13 @@ public class ProductoController {
 	}
 	
 	//eliminar un registro
+	@GetMapping("/delete/{id}")
+
+	public String  delete(@PathVariable Integer id) {
+		productoService.delete(id);
+		//regresa a la lista de todoos los productos
+		return "redirect:/productos";
+
+	}
 	
 }
