@@ -22,17 +22,18 @@
 <body>
 
 	<!-- Navigation -->
-	<!-- Referencia al template que se encuentra dentro de la carpeta administrador y se llama admin.html :se indica la parte que s eva insertar -->
+	<div th:include="usuario/template_usuario.html::header" th:if="${sesion==null}">
+	</div>
 
-	<div th:include="administrador/template_admin.html::header"></div>
+	<div th:include="usuario/template_usuario.html::header-user" th:unless="${sesion==null}"> </div>
 
 	<!-- Page Content -->
 	<div class="container">
 
 		<!-- Jumbotron Header -->
 		<header class="jumbotron my-4">
-			<h1 class="display-3">Bienvenido a Spring Ecommerce 2025</h1>
-			<p class="lead">Tu tienda de productos Flower en Línea</p>
+			<h1 class="display-3">Bienvenido a Spring Ecommerce 2021</h1>
+			<p class="lead">Tu tienda de productos en Línea</p>
 		</header>
 
 		<!-- Page Features -->
@@ -40,18 +41,17 @@
 
 			<div class="col-lg-3 col-md-6 mb-4" th:each="producto: ${productos}">
 				<div class="card h-100">
+					<img class="card-img-top" th:src="@{'/images/' + ${producto.imagen}}" alt="">
 
-					<img class="card-img-top" th:src="@{/images/{img} (img=${producto.imagen})} " alt="">
 					<div class="card-body">
 						<p class="card-text" th:text="${producto.nombre}"></p>
 					</div>
 					<div class="card-footer">
-						<a href="productohome.html" class="btn btn-success">Ver
+						<a th:href="@{/productohome/{id}  (id=${producto.id})  }" class="btn btn-danger">Ver
 							producto</a>
 					</div>
 				</div>
 			</div>
-
 
 		</div>
 		<!-- /.row -->
@@ -59,7 +59,9 @@
 	</div>
 	<!-- /.container -->
 
-	<div th:include="administrador/template_admin.html::footer"></div>
+	<!-- Footer -->
+	<div th:include="usuario/template_usuario.html::footer">
+	</div>
 
 	<!-- Bootstrap core JavaScript -->
 	<script th:src="@{vendor/jquery/jquery.min.js}"></script>
