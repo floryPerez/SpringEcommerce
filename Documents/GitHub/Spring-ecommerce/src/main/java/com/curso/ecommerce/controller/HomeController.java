@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.curso.ecommerce.model.DetalleOrden;
 import com.curso.ecommerce.model.Orden;
 import com.curso.ecommerce.model.Producto;
+import com.curso.ecommerce.model.Usuario;
+import com.curso.ecommerce.repository.IUsuarioRepository;
+import com.curso.ecommerce.service.IUsuarioService;
 import com.curso.ecommerce.service.ProductoService;
 
 import ch.qos.logback.classic.Logger;
@@ -31,6 +34,11 @@ public class HomeController {
 	@Autowired
 	private ProductoService productoService;
 
+	
+	//declarar un obj de tipo usuario
+	@Autowired
+	private IUsuarioService usuarioService;
+	
 	// crear dos variables
 	// lista de detalles de la orde
 	List<DetalleOrden> detalles = new ArrayList<DetalleOrden>();
@@ -137,9 +145,18 @@ public class HomeController {
 	// ver resumen de la orden
 
 	@GetMapping("/order")
-	public String order() {
-
-		return "/usuario/resumeorden";
+	public String order(Model model) {
+		//obteermos un usuario y lo pasamos a la vista
+		Usuario usuario=usuarioService.findById(1).get();//por cuestiones de seg 
+		
+		model.addAttribute("cart", detalles);
+		model.addAttribute("orden", orden);
+		
+		model.addAttribute("usuario", usuario);//cambiar esto por sesiones login
+		return "/usuario/resumenorden";
 	}
+	
+	//mostrar la informacion del producto
+	
 
 }
