@@ -7,6 +7,6 @@ import com.curso.ecommerce.model.Producto;
 
 //es un DAO
 @Repository
-public interface ProductoRepository extends JpaRepository<Producto, Integer> {
+public interface IProductoRepository extends JpaRepository<Producto, Integer> {
 
 }
