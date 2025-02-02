@@ -20,6 +20,12 @@ public class UsuarioServiceImpl implements IUsuarioService {
 		// TODO Auto-generated method stub
 		return usuarioRepository.findById(id);//retiorna un obj como opcional
 	}
+
+	@Override
+	public Usuario save(Usuario usuario) {
+		// TODO Auto-generated method stub
+		return usuarioRepository.save(usuario);//guardar el obj usuario
+	}
 	
 
 	

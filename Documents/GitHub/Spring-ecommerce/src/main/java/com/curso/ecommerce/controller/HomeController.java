@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,9 @@ public class HomeController {
 	// Acceder al crud de orden
 	@Autowired
 	private IOrderService ordenService;
+
+	// para no usar sout
+	private final Logger LOGGER = (Logger) LoggerFactory.getLogger(ProductoController.class);
 
 	@Autowired
 	private IDetalleOrdenService detalleOrdenService;
@@ -167,7 +172,7 @@ public class HomeController {
 
 	// mostrar la informacion del producto
 
-	// metodo guardar la orden 
+	// metodo guardar la orden
 	@GetMapping("/saveOrder")
 	public String saveOrder() {
 
@@ -195,4 +200,16 @@ public class HomeController {
 		return "redirect:/";
 	}
 
+	//buscar
+	@PostMapping("/search")
+	// recibe un texto cadena
+	public String searchProduct(@RequestParam String nombre ,Model model) {
+		log.info("Nombre del producto: {}", nombre);
+		//en el hom pasamos la lista de productos que contengan el valor que se pasa en el buscar
+		List<Producto>  productos=(List<Producto>) productoService.findAll().stream().filter( p->p.getNombre().contains(nombre)).collect(Collectors.toSet());
+		model.addAttribute("productos",productos);
+		return "usuario/home";
+	}
+	
+	
 }
