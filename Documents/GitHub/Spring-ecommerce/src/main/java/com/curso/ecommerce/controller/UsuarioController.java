@@ -1,5 +1,7 @@
 package com.curso.ecommerce.controller;
 
+import java.util.Optional;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import com.curso.ecommerce.model.Usuario;
 import com.curso.ecommerce.service.IUsuarioService;
 
 import ch.qos.logback.classic.Logger;
+import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,4 +51,36 @@ public class UsuarioController {
 		return "redirect:/";// para que lance al home una vez registrado
 	}
 
+	// mostrar la vista para que el usuario pueda logearse
+	@GetMapping("/login")
+	public String login() {
+
+		return "usuario/login";
+	}
+
+	//
+	@PostMapping("/acceder") // terminacion de url ACCEDER
+	// parametro obj de tipo usuario
+	public String acceder(Usuario usuario, HttpSession sesion) {
+		logger.info("Accesos: {}", usuario);
+		// validar el correo se encuentre en la bd
+
+		Optional<Usuario> user = usuarioService.findByEmail(usuario.getEmail());
+
+		//logger.info("Usuario obtenido de bd : {}", user.get());
+
+		if (user.isPresent()) {// so el usuario esta presnete
+			sesion.setAttribute("idusuario", user.get().getId());// guradar el id del usuario
+			if (user.get().getTipo().equals("ADMIN")) {
+				return "redirect:/administrador";
+
+			} else {
+				return "redirect:/";
+			}
+
+		} else {
+			logger.info("USUARIO NO EXISTE");
+		}
+		return "redirect:/";
+	}
 }

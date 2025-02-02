@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Spring eCommerce</title>
+  <title>Spring eCommerce Proyecto Flory </title>
 
 
   <!-- Bootstrap core CSS -->
@@ -25,7 +25,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" th:href="@{/}">Spring Ecommerce</a>
+      <a class="navbar-brand" th:href="@{/}"> Proyecto Spring Ecommerce </a>
 
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,9 +57,8 @@
         </div>
       </div>
     </div>
-
-    
-    <form  th:action="@{/usuario/acceder}" method="post">
+<!--    controlador usuario y accede al metodo acceder
+-->    <form  th:action="@{/usuario/acceder}" method="post">
       <div class="form-group">
         <label for="email"> Email:  </label>      
         <input type="email" class="form-control" id="email" name="email" placeholder="Ingrese su email" required autocomplete="off"> 
@@ -73,11 +72,11 @@
 
       <div class="form-group">
         <div class="col-sm-2">
-          <button type="submit" class="btn btn-dark"> <span class="glyphicon glyphicon-ok"></span> Ingresar</button>
+          <button type="submit" class="btn btn-blue"> <span class="glyphicon glyphicon-ok"></span> Ingresar</button>
         </div>      
       </div>    
     </form>
-    <a th:href="@{/usuario/registro}" class="card-link">Si aún no tiene cuenta aqui puede registrarse</a>
+    <a th:href="@{/usuario/registro}" class="card-link">¿No tienes una cuenta? Registráte</a>
   </div>
   <!-- /.container -->
 
