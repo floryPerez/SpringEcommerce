@@ -12,8 +12,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.curso.ecommerce.model.Producto;
 import com.curso.ecommerce.model.Usuario;
+import com.curso.ecommerce.service.IUsuarioService;
 import com.curso.ecommerce.service.ProductoService;
 import com.curso.ecommerce.service.UploadFileService;
+import com.curso.ecommerce.service.UsuarioServiceImpl;
+
+import jakarta.servlet.http.HttpSession;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +37,8 @@ public class ProductoController {
 	@Autowired
 	private UploadFileService upload;
 	// redicreccionar hacia la vista
-
+@Autowired
+	private IUsuarioService usuarioService;
 	@GetMapping("")
 	public String show(Model model) {
 		// estemodel obj lleva la lista d eprod hacia la vista
@@ -48,11 +53,12 @@ public class ProductoController {
 	}
 
 	@PostMapping("/save")
-	public String save(Producto producto, @RequestParam("img") MultipartFile file) throws IOException {
+	public String save(Producto producto, @RequestParam("img") MultipartFile file, HttpSession session) throws IOException {
 		// test
 		LOGGER.info("ESTE ES EL OBJETO PRODUCTO DE LA VISTA{}", producto);
-		// crear un usuario
-		Usuario u = new Usuario(1, "", "", "", "", "", "", "");
+
+	// crear un usuario
+		Usuario u = usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
 		// se pasa el usuario u
 		producto.setUsuario(u);
 		// crer la log para subir la imgen al servidor y guardar el nombre en la bd
