@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.curso.ecommerce.model.Orden;
+import com.curso.ecommerce.model.Usuario;
 import com.curso.ecommerce.repository.IOrdenRepository;
 
 //clase de servicio para la orden 
@@ -78,6 +79,13 @@ public class OrdenServiceImpl implements IOrderService{
 		return numeroConcatenado;
 		
 		
+	}
+
+	//obteer las ordenes por usuario
+	@Override
+	public List<Orden> findByUsuario(Usuario usuario) {
+		// TODO Auto-generated method stub
+		return ordenRepository.findByUsuario(usuario);
 	}
 
 }

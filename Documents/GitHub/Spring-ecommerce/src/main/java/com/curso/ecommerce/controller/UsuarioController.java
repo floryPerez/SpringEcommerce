@@ -1,5 +1,6 @@
 package com.curso.ecommerce.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.LoggerFactory;
@@ -8,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.curso.ecommerce.model.Orden;
 import com.curso.ecommerce.model.Usuario;
+import com.curso.ecommerce.service.IOrderService;
 import com.curso.ecommerce.service.IUsuarioService;
 
 import ch.qos.logback.classic.Logger;
@@ -26,6 +29,9 @@ public class UsuarioController {
 
 	@Autowired
 	private IUsuarioService usuarioService;
+
+	@Autowired
+	private IOrderService ordenService;
 
 	// metodo para mostar la pag de registro
 
@@ -67,10 +73,10 @@ public class UsuarioController {
 
 		Optional<Usuario> user = usuarioService.findByEmail(usuario.getEmail());
 
-		//logger.info("Usuario obtenido de bd : {}", user.get());
+		// logger.info("Usuario obtenido de bd : {}", user.get());
 
 		if (user.isPresent()) {// so el usuario esta presnete
-		//guardamos la sesion del usuario
+			// guardamos la sesion del usuario
 			sesion.setAttribute("idusuario", user.get().getId());// guradar el id del usuario
 			if (user.get().getTipo().equals("ADMIN")) {
 				return "redirect:/administrador";
@@ -84,12 +90,18 @@ public class UsuarioController {
 		}
 		return "redirect:/";
 	}
-	
-	//obtener copras
+
+	// obtener copras
 	@GetMapping("/compras")
 	public String obtenerCompras(Model model, HttpSession session) {
-	    //enviar id de la sesion a la vista
-	    model.addAttribute("sesion", session.getAttribute("idusuario"));
-	    return "usuario/compras";
+		// enviar id de la sesion a la vista
+		model.addAttribute("sesion", session.getAttribute("idusuario"));
+		Usuario usuario = usuarioService.findById(Integer.parseInt(session.getAttribute("idusuario").toString())).get();
+		List<Orden> ordenes = ordenService.findByUsuario(usuario);
+
+		// pasamos hacia la vista compras
+		model.addAttribute("ordenes", ordenes);
+
+		return "usuario/compras";
 	}
 }
