@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.curso.ecommerce.model.Orden;
@@ -103,5 +104,19 @@ public class UsuarioController {
 		model.addAttribute("ordenes", ordenes);
 
 		return "usuario/compras";
+	}
+
+	// detalles de la orden
+	@GetMapping("/detalles/{id}")
+	public String detalleCompra(@PathVariable Integer id, HttpSession session, Model model) {
+
+		logger.info("id de la orden: {}", id);
+		// pasar los detallles d ela orde
+		Optional<Orden> orden = ordenService.findById(id);
+		model.addAttribute("detalles", orden.get().getDetalle());// trae los detalles y se envia hacia la vista
+		// sesion
+		model.addAttribute("session", session.getAttribute("idusuario"));
+		return "usuario/detallecompra";// retorna a una vista que esta dentro del folder usuario y se llama detalle
+										// compra
 	}
 }
