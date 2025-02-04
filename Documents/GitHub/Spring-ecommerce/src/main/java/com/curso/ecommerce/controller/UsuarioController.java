@@ -12,10 +12,10 @@ import com.curso.ecommerce.model.Usuario;
 import com.curso.ecommerce.service.IUsuarioService;
 
 import ch.qos.logback.classic.Logger;
+import org.springframework.ui.Model;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequestMapping("/usuario")
@@ -83,5 +83,13 @@ public class UsuarioController {
 			logger.info("USUARIO NO EXISTE");
 		}
 		return "redirect:/";
+	}
+	
+	//obtener copras
+	@GetMapping("/compras")
+	public String obtenerCompras(Model model, HttpSession session) {
+	    //enviar id de la sesion a la vista
+	    model.addAttribute("sesion", session.getAttribute("idusuario"));
+	    return "usuario/compras";
 	}
 }
