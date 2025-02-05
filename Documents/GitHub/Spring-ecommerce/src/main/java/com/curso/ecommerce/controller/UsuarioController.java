@@ -119,4 +119,13 @@ public class UsuarioController {
 		return "usuario/detallecompra";// retorna a una vista que esta dentro del folder usuario y se llama detalle
 										// compra
 	}
+	
+	
+	@GetMapping("/cerrar")
+	public String cerrarSesion(HttpSession session) {
+		
+		//poner
+		session.removeAttribute("idusuario");
+		return "redirect:/";
+	}
 }
