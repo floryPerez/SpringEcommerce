@@ -2,10 +2,8 @@ package com.curso.ecommerce.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.slf4j.LoggerFactory;
@@ -22,7 +20,6 @@ import com.curso.ecommerce.model.DetalleOrden;
 import com.curso.ecommerce.model.Orden;
 import com.curso.ecommerce.model.Producto;
 import com.curso.ecommerce.model.Usuario;
-import com.curso.ecommerce.repository.IUsuarioRepository;
 import com.curso.ecommerce.service.IDetalleOrdenService;
 import com.curso.ecommerce.service.IOrderService;
 import com.curso.ecommerce.service.IUsuarioService;
@@ -48,8 +45,6 @@ public class HomeController {
 	@Autowired
 	private IOrderService ordenService;
 
-	// para no usar sout
-	private final Logger LOGGER = (Logger) LoggerFactory.getLogger(ProductoController.class);
 
 	@Autowired
 	private IDetalleOrdenService detalleOrdenService;

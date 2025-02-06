@@ -59,6 +59,7 @@
 									<td th:text="${orden.numero}"></td>
 									<td th:text="${orden.fechaCreacion}"></td>
 									<td th:text="${orden.total}"></td>
+<!--									controlador administrador y la terminacion del etodo detalle y se  le pasa la variabe id -->
 									<td><a th:href="@{/administrador/detalle/{id} (id=${orden.id}) }" class="btn btn-success">Ver
 											Detalle</a></td>
 								</tr>
